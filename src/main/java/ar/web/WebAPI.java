@@ -18,37 +18,32 @@ public class WebAPI {
 
   public void start() {
     Javalin app = Javalin.create().start(this.webPort);
-    app.post("/test", test());
-//  app.before(ctx -> {
-//   System.out.println(ctx.headerMap());
-//  });
-
-//  app.after(ctx -> {
-//   ctx.res.addHeader("Set-Cookie", "token=1234; HttpOnly; SameSite=strict; Secure");
-//   //response.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=strict")
-//  });
+    app.post("/login", login());
 
     app.exception(RuntimeException.class, (e, ctx) -> {
+      ctx.status(401);
       ctx.json(Map.of("result", "error", "message", e.getMessage()));
       // log error in a stream...
     });
 
     app.exception(Exception.class, (e, ctx) -> {
+      ctx.status(500);            
       ctx.json(Map.of("result", "error", "message", "Ups... algo se rompió.: " + e.getMessage()));
       // log error in a stream...
     });
   }
 
-  private Handler test() {
+  private Handler login() {
     return ctx -> {
-      // read token cookie...
-      // var value = ctx.cookie("token");
       LoginForm form = ctx.bodyAsClass(LoginForm.class);
 
       String token = userAuth.authenticate(form.getUser(), form.getPass())
-          .orElseThrow(() -> new RuntimeException("Invalid Username or password"));
+          .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+      
+      //TODO: add secure for PROD
+      ctx.res.setHeader("Set-Cookie", "token=" + token + ";" + "HttpOnly; SameSite=strict");
 
-      ctx.json(Map.of("result", "success", "token", token));
+      ctx.json(Map.of("result", "success"));
     };
   }
 }

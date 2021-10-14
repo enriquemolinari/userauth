@@ -32,8 +32,7 @@ public class ClientUser {
 
  public ClientUser(String username, String password, Role... roles) {
   this.username = username;
-  //TODO: encrypt
-  //https://github.com/patrickfav/bcrypt
+  //TODO: This must be encrypted!
   this.password = password;
   this.roles = Arrays.<Role>asList(roles);
  }
