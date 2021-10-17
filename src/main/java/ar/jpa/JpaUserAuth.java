@@ -24,22 +24,23 @@ public class JpaUserAuth implements UserAuth {
   }
 
   @Override
-  public Optional<String> authenticate(String user, String password) {
+  public Optional<Map<String, Object>> authenticate(String user, String password) {
     EntityManager em = emf.createEntityManager();
     try {
       TypedQuery<ClientUser> q = em.createQuery(
           "select u from ClientUser u where u.username = :username and u.password = :password",
           ClientUser.class);
-      
+
       q.setParameter("username", user);
       q.setParameter("password", password);
-      
+
       try {
-    
+
         ClientUser u = q.getSingleResult();
-        
-        return Optional.of(token.token(Map.of(ROLES, u.roles())));
-    
+
+        return Optional.of(Map.of("token", token.token(Map.of(ROLES, u.roles())), "username", u.name(),
+            ROLES, u.roles()));
+
       } catch (NoResultException e) {
         return Optional.empty();
       }

@@ -27,7 +27,7 @@ public class WebAPI {
     });
 
     app.exception(Exception.class, (e, ctx) -> {
-      ctx.status(500);            
+      ctx.status(500);
       ctx.json(Map.of("result", "error", "message", "Ups... algo se rompió.: " + e.getMessage()));
       // log error in a stream...
     });
@@ -37,13 +37,13 @@ public class WebAPI {
     return ctx -> {
       LoginForm form = ctx.bodyAsClass(LoginForm.class);
 
-      String token = userAuth.authenticate(form.getUser(), form.getPass())
+      Map<String, Object> auth = userAuth.authenticate(form.getUser(), form.getPass())
           .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-      
-      //TODO: add secure for PROD
-      ctx.res.setHeader("Set-Cookie", "token=" + token + ";" + "HttpOnly; SameSite=strict");
 
-      ctx.json(Map.of("result", "success"));
+      // TODO: add secure for PROD
+      ctx.res.setHeader("Set-Cookie", "token=" + auth.get("token") + ";" + "HttpOnly; SameSite=strict");
+
+      ctx.json(Map.of("result", "success", "roles", auth.get("roles"), "name", auth.get("name")));
     };
   }
 }

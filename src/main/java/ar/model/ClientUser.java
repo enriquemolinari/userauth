@@ -43,6 +43,10 @@ public class ClientUser {
    }).collect(Collectors.toList());
  }
  
+ public String name() {
+   return this.username;
+ }
+ 
  public Long userId() {
   return this.id;
  }

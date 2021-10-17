@@ -1,9 +1,10 @@
 package ar.api;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserAuth {
  
- Optional<String> authenticate(String user, String password);
+ Optional<Map<String, Object>> authenticate(String user, String password);
 
 }
