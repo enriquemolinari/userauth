@@ -38,8 +38,7 @@ public class JpaUserAuth implements UserAuth {
 
         ClientUser u = q.getSingleResult();
 
-        return Optional.of(Map.of("token", token.token(Map.of(ROLES, u.roles())), "username", u.name(),
-            ROLES, u.roles()));
+        return Optional.of(Map.of("token", token.token(u.toMap()), "user", u.toMap()));
 
       } catch (NoResultException e) {
         return Optional.empty();

@@ -2,6 +2,7 @@ package ar.model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -37,6 +38,10 @@ public class ClientUser {
   this.roles = Arrays.<Role>asList(roles);
  }
 
+ public Map<String, Object> toMap() {
+   return Map.of("roles", this.roles(), "name", this.username, "id", this.id);
+ }
+ 
  public List<String> roles() {
    return this.roles.stream().map((r) -> {
      return r.toString();

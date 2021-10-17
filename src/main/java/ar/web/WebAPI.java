@@ -43,7 +43,7 @@ public class WebAPI {
       // TODO: add secure for PROD
       ctx.res.setHeader("Set-Cookie", "token=" + auth.get("token") + ";" + "HttpOnly; SameSite=strict");
 
-      ctx.json(Map.of("result", "success", "roles", auth.get("roles"), "name", auth.get("name")));
+      ctx.json(Map.of("result", "success", "user", auth.get("user")));
     };
   }
 }
