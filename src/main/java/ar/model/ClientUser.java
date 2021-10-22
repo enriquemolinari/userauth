@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -18,7 +16,6 @@ import javax.persistence.OneToMany;
 public class ClientUser {
 
  @Id
- @GeneratedValue(strategy = GenerationType.AUTO)
  private Long id;
  private String username;
  private String password;
@@ -27,11 +24,12 @@ public class ClientUser {
  @JoinColumn(name = "id_user")
  private List<Role> roles;
  
- public ClientUser(String username, String password) {
-  this(username, password, new Role[0]);
+ public ClientUser(Long id, String username, String password) {
+  this(id, username, password, new Role[0]);
  }
 
- public ClientUser(String username, String password, Role... roles) {
+ public ClientUser(Long id, String username, String password, Role... roles) {
+  this.id = id;
   this.username = username;
   //TODO: This must be encrypted!
   this.password = password;
@@ -42,10 +40,10 @@ public class ClientUser {
    return Map.of("roles", this.roles(), "name", this.username, "id", this.id);
  }
  
- public List<String> roles() {
+ private String roles() {
    return this.roles.stream().map((r) -> {
      return r.toString();
-   }).collect(Collectors.toList());
+   }).collect(Collectors.joining(","));
  }
  
  public String name() {
