@@ -1,6 +1,6 @@
 # User Auth
 
-This is an Authentication and Authorization back-end service to demonstrate how it works with SPA applications as part of my book [Understanding React](https://leanpub.com/understandingreact).
+This is an Authentication and Authorization back-end service to demonstrate how it works with SPA applications as part of my book [Understanding React](https://leanpub.com/understandingreact). This book is completely free for my students (if you want to read it, just write to me).
 
 # Install and Start
 

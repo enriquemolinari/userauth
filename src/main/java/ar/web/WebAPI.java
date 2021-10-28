@@ -19,6 +19,7 @@ public class WebAPI {
   public void start() {
     Javalin app = Javalin.create().start(this.webPort);
     app.post("/login", login());
+    app.post("/logout", logout());
 
     app.exception(RuntimeException.class, (e, ctx) -> {
       ctx.status(401);
@@ -33,6 +34,16 @@ public class WebAPI {
     });
   }
 
+  private Handler logout() {
+    return ctx -> {
+      //TODO: if you want register login/logout time
+      
+      //just remove the httpOnly cookie
+      ctx.removeCookie("token");
+      ctx.json(Map.of("result", "success"));
+    };
+  }
+  
   private Handler login() {
     return ctx -> {
       LoginForm form = ctx.bodyAsClass(LoginForm.class);
@@ -41,7 +52,7 @@ public class WebAPI {
           .orElseThrow(() -> new RuntimeException("Invalid username or password"));
 
       // TODO: add secure for PROD
-      ctx.res.setHeader("Set-Cookie", "token=" + auth.get("token") + ";" + "HttpOnly; SameSite=strict");
+      ctx.res.setHeader("Set-Cookie", "token=" + auth.get("token") + ";path=/; HttpOnly; SameSite=strict");
 
       ctx.json(Map.of("result", "success", "user", auth.get("user")));
     };
