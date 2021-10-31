@@ -14,7 +14,6 @@ import ar.model.Token;
 
 public class JpaUserAuth implements UserAuth {
 
-  private static final String ROLES = "roles";
   private EntityManagerFactory emf;
   private Token token;
 
