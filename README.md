@@ -4,6 +4,11 @@ This is an Authentication and Authorization back-end service to demonstrate how 
 
 # Install and Start
 
-- Install maven
-- git https://github.com/enriquemolinari/userauth.git userauth
-- then run: mvn exec:java. This will start Javalin/Jetty with the services running on Port: 1234.
+- Install maven on your computer
+- git clone https://github.com/enriquemolinari/userauth.git userauth
+- mvn exec:java. This will start Javalin/Jetty with the services running on Port: 1234.
+
+# Users
+
+- guser/guser123
+- juser/juser123
