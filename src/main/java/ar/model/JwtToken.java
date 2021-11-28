@@ -10,20 +10,20 @@ import com.auth0.jwt.algorithms.Algorithm;
 public class JwtToken implements Token {
 
   private String secret;
-  private static final long defaultSecondsSinceNow = 60 * 60 * 1000; //1 hs
-  private Long secondsSinceNow;
+  private static final long defaultMilliSecondsSinceNow = 60 * 60 * 1000; //1 hs
+  private Long milliSecondsSinceNow;
 
-  public JwtToken(String secret, long secondsSinceNow) {
+  public JwtToken(String secret, long milliSecondsSinceNow) {
     this.secret = secret;
-    this.secondsSinceNow = secondsSinceNow;
+    this.milliSecondsSinceNow = milliSecondsSinceNow;
   }
 
    public JwtToken(String secret) {
-    this(secret, defaultSecondsSinceNow);
+    this(secret, defaultMilliSecondsSinceNow);
   }
 
   private Long expiration() {
-    return (new Date().getTime() + this.secondsSinceNow) / 1000;
+    return (new Date().getTime() + this.milliSecondsSinceNow) / 1000;
   }
    
   @Override
