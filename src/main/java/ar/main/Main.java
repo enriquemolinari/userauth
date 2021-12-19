@@ -10,15 +10,19 @@ import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
 
 import ar.jpa.JpaUserAuth;
-import ar.model.JwtToken;
+import ar.model.PasetoToken;
 import ar.web.WebAPI;
 
 public class Main {
   private static final int MILLISECONDS_SINCE_NOW = 2 * 60 * 60 * 1000 /* 2 hs */;
-  private static final String JWT_SECRET = "secret";
 
   public static void main(String[] args) throws IOException, ParseException {
 
+    String tokenSecret = System.getProperty("secret");
+    if (tokenSecret == null) {
+      throw new IllegalArgumentException("secret value must be passed as a jvm argument");
+    }
+    
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-derby");
 
     SetUpDb setUp = new SetUpDb(emf);
@@ -27,7 +31,7 @@ public class Main {
     UserAgentParser parser = new UserAgentService().loadParser();
 
     WebAPI servicio = new WebAPI(1234,
-        new JpaUserAuth(emf, new JwtToken(JWT_SECRET, MILLISECONDS_SINCE_NOW)), parser);
+        new JpaUserAuth(emf, new PasetoToken(tokenSecret, MILLISECONDS_SINCE_NOW)), parser);
     servicio.start();
   }
 }
