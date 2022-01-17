@@ -11,7 +11,7 @@ import io.javalin.http.Handler;
 
 public class WebAPI {
 
-  private static final String ORIGIN = "https://web-pwa-epm.loca.lt";
+  private static final String ORIGIN = "https://web-epm.loca.lt";
   private static final int CHROME_MINIMUM_VERSION_SUPPORTED = 51;
   private static final String BROWSER_SUPPORTED = "chrome";
   private int webPort;
