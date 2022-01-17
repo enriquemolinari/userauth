@@ -15,7 +15,7 @@ This is an Authentication and Authorization back-end service to demonstrate how 
 To start the service using LocalTunnel URLs, use:
 
 - mvn exec:java -Dsecret=bfhAp4qdm92bD0FIOZLanC66KgCS8cYVxq/KlSVdjhI= -Dtest-with-lt=true
-  - This will enable CORS and change cookie parameters (HttpOnly; domain=loca.lt; Secure; SameSite=None) to enable testing using [LocalTunnel](https://github.com/localtunnel/localtunnel).
+  - This will enable CORS for the origin "https://web-pwa-epm.loca.lt" and change cookie parameters (HttpOnly; domain=loca.lt; Secure; SameSite=None) to enable testing using [LocalTunnel](https://github.com/localtunnel/localtunnel).
   
 # Users
 
