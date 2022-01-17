@@ -11,20 +11,27 @@ import io.javalin.http.Handler;
 
 public class WebAPI {
 
+  private static final String ORIGIN = "https://web-pwa-epm.loca.lt";
   private static final int CHROME_MINIMUM_VERSION_SUPPORTED = 51;
   private static final String BROWSER_SUPPORTED = "chrome";
   private int webPort;
   private UserAuth userAuth;
   private UserAgentParser userAgent;
-
-  public WebAPI(int webPort, UserAuth userAuth, UserAgentParser userAgent) {
+  private Boolean localTunnel;
+  
+  public WebAPI(int webPort, Boolean localTunnel, UserAuth userAuth, UserAgentParser userAgent) {
     this.webPort = webPort;
     this.userAuth = userAuth;
     this.userAgent = userAgent;
+    this.localTunnel = localTunnel;
   }
 
   public void start() {
-    Javalin app = Javalin.create().start(this.webPort);
+    Javalin app = Javalin.create(config -> {
+      if (localTunnel) {
+        config.enableCorsForOrigin(ORIGIN);
+      }
+    }).start(this.webPort);
     app.post("/login", login());
     app.post("/logout", logout());
 
@@ -83,9 +90,16 @@ public class WebAPI {
       Map<String, Object> auth = userAuth.authenticate(form.getUser(), form.getPass())
           .orElseThrow(() -> new RuntimeException("Invalid username or password"));
 
-      // TODO: add secure for PROD
+      // TODO: add secure for PROD env
+      
+      String values = "SameSite=strict";
+      if (this.localTunnel) {
+        values = "domain=loca.lt; Secure; SameSite=None";
+      }
+      //domain=loca.lt; Secure; SameSite=None for testing using localtunne
+      //SameSite=strict using proxy
       ctx.res.setHeader("Set-Cookie",
-          "token=" + auth.get("token") + ";path=/; HttpOnly; SameSite=strict");
+          "token=" + auth.get("token") + ";path=/; HttpOnly; " + values); 
 
       ctx.json(Map.of("result", "success", "user", auth.get("user")));
     };

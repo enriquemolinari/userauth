@@ -10,6 +10,13 @@ This is an Authentication and Authorization back-end service to demonstrate how 
 - mvn exec:java -Dsecret=bfhAp4qdm92bD0FIOZLanC66KgCS8cYVxq/KlSVdjhI= 
   - This will start Javalin/Jetty with the services running on Port: 1234. And set the shared secret. You can create any cryptographically secure secret, as long as it is the same used by the [Task List](https://github.com/enriquemolinari/tasklist) microservice. The secret is used to create and validate paseto tokens.
 
+## Using LocalTunnel
+
+To start the service using LocalTunnel URLs, use:
+
+- mvn exec:java -Dsecret=bfhAp4qdm92bD0FIOZLanC66KgCS8cYVxq/KlSVdjhI= -Dtest-with-lt=true
+  - This will enable CORS and change cookie parameters to enable testing using [LocalTunnel](https://github.com/localtunnel/localtunnel).
+  
 # Users
 
 - guser/guser123

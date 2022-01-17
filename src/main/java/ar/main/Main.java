@@ -19,9 +19,16 @@ public class Main {
   public static void main(String[] args) throws IOException, ParseException {
 
     String tokenSecret = System.getProperty("secret");
+    
     if (tokenSecret == null) {
       throw new IllegalArgumentException("secret value must be passed as a jvm argument");
     }
+    
+    Boolean localTunnel = Boolean.valueOf(System.getProperty("test-with-lt"));
+    
+    if (localTunnel == null) {
+      localTunnel = false;
+    }    
     
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-derby");
 
@@ -30,7 +37,7 @@ public class Main {
 
     UserAgentParser parser = new UserAgentService().loadParser();
 
-    WebAPI servicio = new WebAPI(1234,
+    WebAPI servicio = new WebAPI(1234, localTunnel,
         new JpaUserAuth(emf, new PasetoToken(tokenSecret, MILLISECONDS_SINCE_NOW)), parser);
     servicio.start();
   }
